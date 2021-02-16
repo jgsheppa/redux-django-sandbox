@@ -5,11 +5,9 @@ import {
   LOAD_GUESTS,
 } from './actionTypes';
 
-export const addGuestToList = (content) => ({
+export const addGuestToList = (newGuest) => ({
   type: ADD_GUEST,
-  payload: {
-    content,
-  },
+  payload: newGuest,
 });
 
 export const updateGuest = () => ({

@@ -13,8 +13,12 @@ const initialState = {
 export default function list(state = initialState, action) {
   switch (action.type) {
     case ADD_GUEST: {
+      console.log('ADD_GUEST');
+      console.log('payload', action.payload);
       return {
         ...state,
+        guests: [...state.guests, action.payload],
+        newGuest: action.payload,
       };
     }
     case UPDATE_GUEST: {
@@ -28,8 +32,6 @@ export default function list(state = initialState, action) {
       };
     }
     case LOAD_GUESTS: {
-      console.log('LOAD GUESTS');
-      console.log('payload', action.payload);
       return { ...state, guests: action.payload };
     }
     default:
@@ -37,6 +39,29 @@ export default function list(state = initialState, action) {
       return state;
   }
 }
+
+export const addGuest = () => async (dispatch, getState) => {
+  const guest = getState().guestList.newGuest;
+  console.log('get state guest', guest);
+  const requestOptions = {
+    method: 'POST',
+    headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+    body: JSON.stringify(guest),
+  };
+  const postNewGuest = await fetch(
+    `http://127.0.0.1:8000/snippets/`,
+    requestOptions,
+  )
+    .then((response) => response.json())
+    .then((data) => {
+      console.log('Success:', data);
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    });
+  console.log('after fetch');
+  return postNewGuest;
+};
 
 export const loadGuests = () => async (dispatch, getState) => {
   const guests = await fetch(`http://127.0.0.1:8000/snippets/`).then((res) =>

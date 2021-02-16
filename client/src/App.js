@@ -3,22 +3,35 @@ import { useSelector, useDispatch } from 'react-redux';
 import './App.css';
 import EnterGuest from './components/enterGuest';
 import GuestList from './components/guestList';
-import { loadGuests } from './redux/reducers/guestList';
+import { loadGuests, addGuest } from './redux/reducers/guestList';
+import { addGuestToList } from './redux/actions';
 
 function App({ store }) {
   const guests = useSelector((state) => state.guestList.guests);
-
+  console.log('store', store.getState());
   const dispatch = useDispatch();
-  const onLoad = () => {
-    dispatch(loadGuests());
+
+  const onAddGuest = (newGuest) => {
+    dispatch(addGuestToList(newGuest));
+  };
+
+  const sendGuestToServer = () => {
+    dispatch(addGuest());
   };
 
   useEffect(() => {
+    const onLoad = () => {
+      dispatch(loadGuests());
+    };
+
     onLoad();
-  }, []);
+  }, [dispatch]);
   return (
     <div>
-      <EnterGuest />
+      <EnterGuest
+        onAddGuest={onAddGuest}
+        sendGuestToServer={sendGuestToServer}
+      />
       <GuestList guests={guests} />
     </div>
   );
