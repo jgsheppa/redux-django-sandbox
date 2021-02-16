@@ -20,3 +20,13 @@ class Snippet(models.Model):
 
     class Meta:
         ordering = ['created']
+
+
+class Guests(models.Model):
+    created = models.DateTimeField(auto_now_add=True)
+    firstName = models.CharField(max_length=100)
+    lastName = models.CharField(max_length=100)
+    attending = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ['created']
