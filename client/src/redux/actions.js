@@ -14,9 +14,9 @@ export const updateGuest = () => ({
   type: UPDATE_GUEST,
 });
 
-export const deleteGuestFromList = (id) => ({
+export const deleteGuestFromList = (guest) => ({
   type: DELETE_GUEST,
-  payload: { id },
+  payload: guest,
 });
 
 export const setGuests = (guests) => ({

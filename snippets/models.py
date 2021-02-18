@@ -26,7 +26,7 @@ class Guests(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     firstName = models.CharField(max_length=100)
     lastName = models.CharField(max_length=100)
-    attending = models.BooleanField(default=True)
+    attending = models.BooleanField(default=False)
 
     class Meta:
         ordering = ['created']

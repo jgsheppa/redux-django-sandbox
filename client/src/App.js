@@ -3,20 +3,28 @@ import { useSelector, useDispatch } from 'react-redux';
 import './App.css';
 import EnterGuest from './components/enterGuest';
 import GuestList from './components/guestList';
-import { loadGuests, addGuest } from './redux/reducers/guestList';
-import { addGuestToList } from './redux/actions';
+import {
+  loadGuests,
+  addGuestToServer,
+  deleteGuest,
+} from './redux/reducers/guestList';
+import { addGuestToList, deleteGuestFromList } from './redux/actions';
 
 function App({ store }) {
   const guests = useSelector((state) => state.guestList.guests);
+  console.log('whole store', store);
   console.log('store', store.getState());
   const dispatch = useDispatch();
 
   const onAddGuest = (newGuest) => {
     dispatch(addGuestToList(newGuest));
+    dispatch(addGuestToServer());
   };
 
-  const sendGuestToServer = () => {
-    dispatch(addGuest());
+  // Put closer to the source component
+  const deleteGuestFromServer = (idNumber, guest) => {
+    dispatch(deleteGuest(idNumber));
+    dispatch(deleteGuestFromList(guest));
   };
 
   useEffect(() => {
@@ -28,11 +36,11 @@ function App({ store }) {
   }, [dispatch]);
   return (
     <div>
-      <EnterGuest
-        onAddGuest={onAddGuest}
-        sendGuestToServer={sendGuestToServer}
+      <EnterGuest onAddGuest={onAddGuest} />
+      <GuestList
+        guests={guests}
+        deleteGuestFromServer={deleteGuestFromServer}
       />
-      <GuestList guests={guests} />
     </div>
   );
 }

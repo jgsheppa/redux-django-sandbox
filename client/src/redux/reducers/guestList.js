@@ -27,8 +27,10 @@ export default function list(state = initialState, action) {
       };
     }
     case DELETE_GUEST: {
+      console.log('DELETE GUEST', state);
       return {
         ...state,
+        guests: state.guests.filter((item) => item !== action.payload),
       };
     }
     case LOAD_GUESTS: {
@@ -40,9 +42,10 @@ export default function list(state = initialState, action) {
   }
 }
 
-export const addGuest = () => async (dispatch, getState) => {
+export const addGuestToServer = () => async (dispatch, getState) => {
   const guest = getState().guestList.newGuest;
-  console.log('get state guest', guest);
+  console.log('backend guest', guest);
+
   const requestOptions = {
     method: 'POST',
     headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
@@ -59,7 +62,7 @@ export const addGuest = () => async (dispatch, getState) => {
     .catch((error) => {
       console.error('Error:', error);
     });
-  console.log('after fetch');
+
   return postNewGuest;
 };
 
@@ -69,4 +72,21 @@ export const loadGuests = () => async (dispatch, getState) => {
   );
 
   dispatch(setGuests(guests));
+};
+
+export const deleteGuest = (idNumber) => async (dispatch, getState) => {
+  const requestOptions = {
+    method: 'DELETE',
+    headers: { 'Content-Type': 'application/json' },
+  };
+  const response = await fetch(
+    `http://127.0.0.1:8000/snippets/${idNumber}`,
+    requestOptions,
+  )
+    .then((response) => response)
+    .catch((error) => {
+      console.error('Error:', error);
+    });
+
+  return response;
 };

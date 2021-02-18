@@ -33,9 +33,7 @@ class GuestSerializer(serializers.ModelSerializer):
         fields = ['id', 'firstName', 'lastName', 'attending']
 
     def create(self, validated_data):
-        """
-        Create and return a new `Snippet` instance, given the validated data.
-        """
+
         return Guests.objects.create(**validated_data)
 
     def update(self, instance, validated_data):
@@ -50,3 +48,11 @@ class GuestSerializer(serializers.ModelSerializer):
             'attending', instance.attending)
         instance.save()
         return instance
+
+    def destroy(self, request, *args, **kwargs):
+        try:
+            instance = self.get_object()
+            self.perform_destroy(instance)
+        except Http404:
+            pass
+        return Response(status=status.HTTP_204_NO_CONTENT)
