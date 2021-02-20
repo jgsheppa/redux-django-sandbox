@@ -9,6 +9,7 @@ import {
   deleteGuest,
 } from './redux/reducers/guestList';
 import { addGuestToList, deleteGuestFromList } from './redux/actions';
+import AttendingGuestsList from './components/attendingGuestsList';
 
 function App({ store }) {
   const guests = useSelector((state) => state.guestList.guests);
@@ -41,6 +42,7 @@ function App({ store }) {
         guests={guests}
         deleteGuestFromServer={deleteGuestFromServer}
       />
+      <AttendingGuestsList guests={guests} />
     </div>
   );
 }
